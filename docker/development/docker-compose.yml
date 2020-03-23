@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+    kajappka-game-service:
+        image: clojure:openjdk-14-alpine
+        volumes:
+            - "../..:/app"
+        working_dir: /app
+        environment:
+            PORT: 9001
+            VERIFIER_URI: "http://verifier-mock:8000/success"
+        expose:
+            - "9001"
+        ports:
+            - "9001:9001"
+        command: ["lein", "api"]
+        depends_on:
+          - verifier-mock
+    verifier-mock:
+      image: docker.pkg.github.com/makimo/verifier-mock/verifier-mock:latest
